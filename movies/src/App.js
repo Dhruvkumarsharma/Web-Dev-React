@@ -99,7 +99,7 @@ class App extends Component {
         query: this.state.currentMovie,
       },
     });
-    console.log(data);
+    // console.log(data);
     let moviesData = data.data.results;
     this.setState({
       moviesData: moviesData,
