@@ -4,33 +4,33 @@ import YouTube from 'react-youtube';
 import { API_URL, API_KEY } from "../../API/secreates"
 import "./MoviePage.css";
 class Moviepage extends Component {
-    state = { 
-        videoObject:{},
-     }
+    state = {
+        videoObject: {},
+    }
 
-     async componentDidMount(){
-         let response = await axios.get(`${API_URL}/movie/${this.props.location.state.id}/videos?api_key=${API_KEY}&language=en-US`);
-         console.log(response);
-         let videoObjt = response.data.results.filter((videoObj)=> {
-            if(videoObj.type == "Trailer" && videoObj.site == "YouTube") {
+    async componentDidMount() {
+        let response = await axios.get(`${API_URL}/movie/${this.props.location.state.id}/videos?api_key=${API_KEY}&language=en-US`);
+        console.log(response);
+        let videoObjt = response.data.results.filter((videoObj) => {
+            if (videoObj.type == "Trailer" && videoObj.site == "YouTube") {
                 return true;
             }
             return false;
-         })
-         this.setState({
-             videoObject: videoObjt[0],
-         })
-     }
-    render() { 
+        })
+        this.setState({
+            videoObject: videoObjt[0],
+        })
+    }
+    render() {
         const opts = {
-            height:"100%",
+            height: "100%",
             width: "100%",
             playerVars: {
-              autoplay: 1,
+                autoplay: 1,
             },
-          };
+        };
         let { title, tagline, vote_average, poster_path, overview } = this.props.location.state;
-        return ( 
+        return (
             <div className="movie-page">
                 <div className="movie-page-poster">
                     <img src={poster_path} alt="" />
@@ -44,12 +44,13 @@ class Moviepage extends Component {
                         <p>{overview}</p>
                     </div>
                     <div className="movie-trailer">
-                        <YouTube videoId={this.state.videoObject.key} opts={opts}></YouTube>
+                        {(this.state.videoObject) ? (<YouTube videoId={this.state.videoObject.key} opts={opts}></YouTube>) : (<YouTube></YouTube>)}
+
                     </div>
                 </div>
             </div>
-         );
+        );
     }
 }
- 
+
 export default Moviepage;
