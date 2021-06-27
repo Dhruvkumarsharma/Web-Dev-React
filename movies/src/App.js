@@ -7,6 +7,7 @@ import Pagination from './Components/Pagination/Pagination.jsx';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Favourite from "./Components/Favourite/Favourite";
 import MoviePage from "./Components/MoviePage/MoviePage";
+import Crousel from './Components/Crousel/Crousel.jsx';
 // import "App.css"
 class App extends Component {
   state = {
@@ -14,6 +15,7 @@ class App extends Component {
     currentMovie: "avengers",
     pages: [],
     currPage: 1,
+    fav: []
   }
 
   setMovie = async (movieName) => {
@@ -106,6 +108,20 @@ class App extends Component {
       currPage: pageCount,
     });
   };
+  setFav = (movieObj) => {
+    let mobj = this.state.fav;
+    let myfav = mobj.filter((movobj) => {
+      return movobj == movieObj;
+    })
+    if (myfav.length == 0) {
+      mobj.push(movieObj);
+      this.setState({
+        fav: mobj
+      })
+
+
+    }
+  }
 
   render() {
     return (
@@ -118,6 +134,7 @@ class App extends Component {
             <Route path="/" exact>
               {(this.state.moviesData.length) ? (
                 <React.Fragment>
+                  <Crousel></Crousel>
                   <Movies moviesData={this.state.moviesData}></Movies>
                   <Pagination pages={this.state.pages}
                     currPage={this.state.currPage}
@@ -133,14 +150,12 @@ class App extends Component {
             </Route>
 
 
-            <Route path="/fav" exact>
-              <Favourite></Favourite>
-            </Route>
+            <Route path="/fav" render={(props) => (<Favourite {...props} fav={this.state.fav}></Favourite>)} exact></Route>
 
 
-              <Route path="/moviepage" exact component={MoviePage}></Route>
-              
-              
+            <Route path="/moviepage" render={(props) => (<MoviePage {...props} setfav={this.setFav} fav={this.state.fav}></MoviePage>)} exact ></Route>
+
+
           </Switch>
         </div>
       </Router>

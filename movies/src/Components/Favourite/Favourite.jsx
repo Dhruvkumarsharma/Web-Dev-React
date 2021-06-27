@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-
+import Movies from '../Movies/Movies';
 class Favourite extends Component {
-    state = {  }
-    render() { 
+    state = { 
+        
+     }
+    render() {
+        let fav = this.props.fav;
         return ( 
-            <h1>hi from favourite</h1>
+            <Movies moviesData={fav}></Movies>
          );
     }
 }

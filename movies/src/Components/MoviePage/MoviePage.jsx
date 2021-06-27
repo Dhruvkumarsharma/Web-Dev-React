@@ -21,6 +21,9 @@ class Moviepage extends Component {
             videoObject: videoObjt[0],
         })
     }
+    handleFav = ()=>{
+        this.props.setfav(this.props.location.state);
+    }
     render() {
         const opts = {
             height: "100%",
@@ -40,6 +43,8 @@ class Moviepage extends Component {
                         <h1>
                             {title} <br></br> {vote_average} IMDB
                         </h1>
+                        <button className="btn btn-danger" onClick={this.handleFav}>ADD TO FAV</button>
+                        <br />
                         <span>{tagline}</span>
                         <p>{overview}</p>
                     </div>
