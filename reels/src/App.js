@@ -29,6 +29,7 @@ function App() {
 function PrivateRoute(props) {
   let { comp: Component, path } = props;
   let { currentUser } = useContext(AuthContext);
+  // let currentUser = true;
   return currentUser ? (
     <Route path={path} component={Component}></Route>
   ) : (
