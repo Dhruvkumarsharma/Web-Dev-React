@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { Grid } from '@material-ui/core';
+import {AuthProvider} from './context/AuthProvider.jsx';
 
 
-ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
+ReactDOM.render(<AuthProvider>
+  <App />
+</AuthProvider>
+  , document.getElementById('root'));

@@ -6,6 +6,7 @@ import { firebaseDB, firebaseStorage } from '../config/firebase';
 import { uuid } from "uuidv4";
 import VideoPost from './VideoPost';
 
+
 const Feeds = (props) => {
     const { signout } = useContext(AuthContext);
     const [videoFile, setVideoFile] = useState(null);
@@ -101,9 +102,10 @@ const Feeds = (props) => {
 
             <div className="upload-video">
                 <div>
-                    <input type="file" onChange={handleInputFile}></input>
+                    
                     <label>
                         <Button variant="outlined" color="secondary" onClick={handleUploadFile} startIcon={<PhotoCamera></PhotoCamera>}>
+                        <input type="file" hidden onChange={handleInputFile}></input>
                             Upload
                         </Button>
                     </label>
