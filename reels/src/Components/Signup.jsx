@@ -80,17 +80,20 @@ const Signup = (props) => {
     fl: {
       display: "flex",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
     alignCenter: {
       justifyContent: "center",
     },
+    tp:{
+      marginTop:"100px",
+    }
   });
   let classes = useStyles();
 
   return (
     <>
-      <Container>
+      <Container className={classes.tp}>
         <Grid container className={classes.fl}>
           <Grid item sm={3}>
             <Card variant="outlined">
@@ -140,42 +143,6 @@ const Signup = (props) => {
           </Grid>
         </Grid>
       </Container>
-      {/* <h1>Signup Page</h1>
-      <div>
-        <div>
-          Username
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          Email
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          Password
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          Profile Image
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              handleFileSubmit(e);
-            }}
-          ></input>
-        </div>
-      </div>
-      <button onClick={handleSignUp}>SignUp</button>
-      <h2 style={{ color: "red" }}>{message}</h2>{" "} */}
     </>
   );
 };

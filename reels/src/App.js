@@ -9,17 +9,18 @@ import { AuthContext } from "./context/AuthProvider"
 
 
 function App() {
+  let { currentUser } = useContext(AuthContext);
   return (
     
       <Router>
-        <Header></Header>
+        {currentUser?<Header></Header>:<></>}
+        
         <Switch>
           <Route path="/login" component={Login} exact></Route>
           <Route path="/signup"  component={Signup} exact></Route>
-          <PrivateRoute path= "/" comp={Feeds}></PrivateRoute>
-          <PrivateRoute path= "/profile" comp={Profile}></PrivateRoute>
+          <PrivateRoute exact path= "/" comp={Feeds}></PrivateRoute>
+          <PrivateRoute exact path= "/profile" comp={Profile}></PrivateRoute>
         </Switch>
-
       </Router>
 
     
@@ -30,7 +31,7 @@ function PrivateRoute(props) {
   let { comp: Component, path } = props;
   let { currentUser } = useContext(AuthContext);
   // let currentUser = true;
-  return currentUser ? (
+  return true ? (
     <Route path={path} component={Component}></Route>
   ) : (
     <Redirect to="/login"></Redirect>

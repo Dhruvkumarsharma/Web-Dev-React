@@ -2,6 +2,16 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 import logo from "../logo.png";
+import Img1 from "../Assets/img1.jpg";
+import Img2 from "../Assets/img2.jpg";
+import Img3 from "../Assets/img3.jpg";
+import Img4 from "../Assets/img4.jpg";
+import Img5 from "../Assets/img5.jpg";
+import Insta from "../Assets/insta.png";
+import Alert from '@material-ui/lab/Alert';
+import { CarouselProvider, Slider, Slide, Image } from 'pure-react-carousel';
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import "./Login.css";
 import {
   TextField,
   Grid,
@@ -20,17 +30,21 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   let { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     //   email , password
     try {
+      setLoading(true);
       await login(email, password);
+      setLoading(false);
       props.history.push("/"); //navigate to /
     } catch (err) {
       setMessage(err.message);
       setEmail("");
       setPassword("");
+      setLoading(false)
     }
   };
 
@@ -64,76 +78,82 @@ const Login = (props) => {
 
   return (
     <div>
-      <Container>
-        <Grid container spacing={2}>
-          {/* Carousel */}
-          <Grid item sm={5}>
-            <Paper className={classes.carousal}>Carousel</Paper>
-          </Grid>
-          <Grid item sm={3}>
-            <Card variant="outlined" className={classes.mb}>
-              <CardMedia
-                image={logo}
-                style={{ height: "5rem", backgroundSize: "contain" }}
-              ></CardMedia>
-              <CardContent className={classes.centerElements}>
-                <TextField
-                  label="Email"
-                  type="email"
-                  variant="outlined"
-                  value={email}
-                  className={classes.mb}
-                  size="small"
-                  onChange={(e) => setEmail(e.target.value)}
-                ></TextField>
-                <TextField
-                  label="Password"
-                  type="password"
-                  variant="outlined"
-                  value={password}
-                  size="small"
-                  onChange={(e) => setPassword(e.target.value)}
-                ></TextField>
-              </CardContent>
-              <CardActions>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleLogin}
-                  className={classes.fullWidth}
-                >
-                  Login
-                </Button>
-              </CardActions>
-            </Card>
-            <Card variant="outlined" className={classes.padding}>
-              <Typography style={{ textAlign: "center" }}>
-                Don't have an account ?
-                {/* <Button variant="contained" color="primary"> */}
-                  <Link to="/signup">
-                    SignUp
-                  </Link>
-                {/* </Button> */}
+
+      {(loading == true) ? (<h1>Please wait while loding...</h1>):
+      (<div className='login-container'>
+        <div className='imgcar' style={{ backgroundImage: `url(` + Insta + `)`, backgroundSize: 'cover' }}>
+          <div className='caro'>
+            <CarouselProvider
+              visibleSlides={1}
+              totalSlides={5}
+              step={3}
+              naturalSlideWidth={238}
+              naturalSlideHeight={423}
+              hasMasterSpinner
+              isPlaying={true}
+              infinite={true}
+              dragEnabled={false}
+              touchEnabled={false}
+            >
+              <Slider>
+                <Slide index={0}>
+                  <Image src={Img1} />
+                </Slide>
+                <Slide index={1}>
+                  <Image src={Img2} />
+                </Slide>
+                <Slide index={2}>
+                  <Image src={Img3} />
+                </Slide>
+                <Slide index={3}>
+                  <Image src={Img4} />
+                </Slide>
+                <Slide index={4}>
+                  <Image src={Img5} />
+                </Slide>
+              </Slider>
+  
+            </CarouselProvider>
+          </div>
+        </div>
+        <div className='login-form'>
+          <Card className={classes.root} variant="outlined">
+            <CardContent>
+              <div className="insta-head">
+                <img src={logo} />
+              </div>
+              {message && <Alert severity="error">{message}</Alert>}
+              <TextField InputLabelProps={{ style: { width: '-webkit-fill-available' } }} className={classes.email} margin='dense'
+                onChange={(e) => { setEmail(e.target.value) }} id="outlined-basic" label="Enter Email" variant="outlined" fullWidth={true} size='small' />
+              <TextField InputLabelProps={{ style: { width: '-webkit-fill-available' } }} className={classes.password} margin='dense'
+                onChange={(e) => { setPassword(e.target.value) }} id="outlined-basic" label="Password" variant="outlined" fullWidth={true} size='small' />
+              <Typography variant='subtitle1'>
+                <Link className={classes.link} variant="inherit" underline='none' href="#" >
+                  Forget Password ?
+                </Link>
               </Typography>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-      {/* <h1>Login Page</h1>
-      <div>
-        Email
-        <input value={email} onChange={(e) => setEmail(e.target.value)}></input>
-      </div>
-      <div>
-        Password
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-      </div>
-      <button onClick={handleLogin}>Login</button>
-      <h2 style={{ color: "red" }}>{message}</h2>{" "} */}
-    </div>
+            </CardContent>
+  
+            <CardActions>
+              <Button disabled={loading} onClick={handleLogin} className={classes.buton} fullWidth={true} variant="contained" color="primary">
+                Log In
+              </Button>
+            </CardActions>
+          </Card>
+  
+          <Card className={classes.root2} variant="outlined">
+            <CardContent>
+              <Typography className={classes.typo} variant='subtitle1'>
+                Don't have an account? <Link className={classes.link2} variant="inherit" underline='none' to="/signup" >
+                  Sign up
+                </Link>
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
+  
+      </div>)
+}</div>
   );
 };
 

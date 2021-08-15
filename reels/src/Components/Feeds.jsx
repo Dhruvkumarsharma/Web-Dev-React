@@ -8,17 +8,12 @@ import VideoPost from './VideoPost';
 
 
 const Feeds = (props) => {
-    const { signout } = useContext(AuthContext);
     const [videoFile, setVideoFile] = useState(null);
     const [posts, setPosts] = useState([]);
     const { currentUser } = useContext(AuthContext);
     const handleInputFile = (e) => {
         let file = e.target.files[0];
         setVideoFile(file);
-    }
-    const handleSignout = async () => {
-        await signout();
-        props.history.push("/login");
     }
     const handleUploadFile = async () => {
         try {
@@ -46,7 +41,7 @@ const Feeds = (props) => {
                 });
                 let doc = await firebaseDB.collection("users").doc(uid).get();
                 let document = doc.data();
-                console.log(document);
+                // console.log(document);
                 document.postsCreated.push(pid);
                 await firebaseDB.collection("users").doc(uid).set(document);
             }
@@ -58,63 +53,60 @@ const Feeds = (props) => {
     let conditionObject = {
         root: null, //observe from whole page
         threshold: "0.8", //80%
-      };
-    
-      function cb(entries) {
+    };
+
+    function cb(entries) {
         console.log(entries);
         entries.forEach((entry) => {
-          let child = entry.target.children[0];
-          // play(); => async
-          // pause(); => sync
-    
-          child.play().then(function () {
-            if (entry.isIntersecting == false) {
-              child.pause();
-            }
-          });
+            let child = entry.target.children[0];
+            // play(); => async
+            // pause(); => sync
+            child.play().then(function () {
+                if (entry.isIntersecting == false) {
+                    child.pause();
+                }
+            });
         });
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         // code which will run when the component loads
         let observerObject = new IntersectionObserver(cb, conditionObject);
         let elements = document.querySelectorAll(".video-container");
-    
+
         elements.forEach((el) => {
-          observerObject.observe(el); //Intersection Observer starts observing each video element
+            observerObject.observe(el); //Intersection Observer starts observing each video element
         });
-      }, [posts]);
+    }, [posts]);
     useEffect(() => {
-        firebaseDB.collection("posts").get().then((snapshot) => {
-            let allPosts = snapshot.docs.map((doc) => {
-                return doc.data();
-            });
-            setPosts(allPosts);
-        })
+        firebaseDB
+            .collection("posts")
+            .orderBy("createdAt", "desc")
+            .onSnapshot((snapshot) => {
+                let allPosts = snapshot.docs.map((doc) => {
+                    return doc.data();
+                });
+                setPosts(allPosts);
+            })
     }, [])
 
 
     return (
         <>
-            <h1>Feeds</h1>
-            <button onClick={handleSignout}>Signout</button>
-
-
             <div className="upload-video">
                 <div>
-                    
                     <label>
+                        <input type="file" onChange={handleInputFile}></input>
                         <Button variant="outlined" color="secondary" onClick={handleUploadFile} startIcon={<PhotoCamera></PhotoCamera>}>
-                        <input type="file" hidden onChange={handleInputFile}></input>
                             Upload
                         </Button>
                     </label>
                 </div>
-                <div className="feeds-video-list">
-                    {posts.map((postObj) => {
-                        return <VideoPost key={postObj.pid} postObj={postObj}></VideoPost>;
-                    })}
-                </div>
+            </div>
+            <div className="feeds-video-list">
+                {posts.map((postObj) => {
+                    return <VideoPost key={postObj.pid} postObj={postObj}></VideoPost>;
+                })}
             </div>
         </>
     );
