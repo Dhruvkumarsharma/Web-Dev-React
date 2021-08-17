@@ -10,10 +10,10 @@ export const AuthProvider = ({ children }) => {
         return firebaseAuth.signInWithEmailAndPassword(email, password);
     }
     function signout() {
+        // setCurrentUser(null);
         return firebaseAuth.signOut();
     }
     function signup(email, password) {
-        setCurrentUser(null);
         return firebaseAuth.createUserWithEmailAndPassword(email, password);
     }
 

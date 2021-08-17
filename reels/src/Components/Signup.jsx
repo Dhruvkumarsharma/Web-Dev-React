@@ -25,29 +25,34 @@ const Signup = (props) => {
     try {
       let response = await signup(email, password);
       let uid = response.user.uid;
+      //   you are signed up
       const uploadPhotoObject = firebaseStorage
         .ref(`/profilePhotos/${uid}/image.jpg`)
         .put(profileImage);
+      //   console.log(uploadPhotoObject);
       uploadPhotoObject.on("state_changed", fun1, fun2, fun3);
-      //on process
+      // to track the progress of the upload
       function fun1(snapshot) {
+        // bytes transferred
+        // totoal bytes
         let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(progress);
       }
-      //on error
+      // if indicates a error !!
       function fun2(error) {
         console.log(error);
       }
-      //on sucess
+      // it indicates success of the upload !!
       async function fun3() {
         let profileImageUrl =
           await uploadPhotoObject.snapshot.ref.getDownloadURL();
+        // db me collection => document => {username , email , profileImageUrl};
         firebaseDB.collection("users").doc(uid).set({
           email: email,
           userId: uid,
           username: username,
           profileImageUrl: profileImageUrl,
-          postsCreated: []
+          postsCreated:[]
         });
         props.history.push("/");
       }

@@ -177,7 +177,7 @@ export default function Header() {
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
+                    <Typography onClick={()=>{history.push('/')}} className={classes.title} variant="h6" noWrap>
                         <Instagram></Instagram>
                     </Typography>
                     <div className={classes.search}>

@@ -29,6 +29,7 @@ const Feeds = (props) => {
                 console.log(err);
             }
             async function fun3() {
+                console.log("function 3");
                 let videoUrl = await uploadVideoFile.snapshot.ref.getDownloadURL();
                 console.log(videoUrl);
                 let pid = uuid();
@@ -73,7 +74,6 @@ const Feeds = (props) => {
         // code which will run when the component loads
         let observerObject = new IntersectionObserver(cb, conditionObject);
         let elements = document.querySelectorAll(".video-container");
-
         elements.forEach((el) => {
             observerObject.observe(el); //Intersection Observer starts observing each video element
         });
@@ -81,8 +81,9 @@ const Feeds = (props) => {
     useEffect(() => {
         firebaseDB
             .collection("posts")
-            .orderBy("createdAt", "desc")
+            // .orderBy("createdAt", "desc")
             .onSnapshot((snapshot) => {
+                console.log(snapshot);
                 let allPosts = snapshot.docs.map((doc) => {
                     return doc.data();
                 });
